@@ -6,7 +6,9 @@ import 'package:quizapp/data/questions.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class QuestionScreen extends StatefulWidget {
-  const QuestionScreen({super.key});
+  const QuestionScreen({super.key, required this.onSelectedAnswer});
+
+  final void Function(String answer) onSelectedAnswer;
 
   @override
   State<QuestionScreen> createState() {
@@ -18,14 +20,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
 
   var currenQuestionIndex = 0;
 
-  void answerQuestion(){
-    var maxIndex = questions.length-1;
+  void answerQuestion(String selectedAnswer){
+    
+    widget.onSelectedAnswer(selectedAnswer);
+
     setState(() {
-      if(currenQuestionIndex<maxIndex){
-        currenQuestionIndex++;
-      }else{
-        currenQuestionIndex=0;
-      }
+      currenQuestionIndex++;
     });
     
     
@@ -55,7 +55,9 @@ class _QuestionScreenState extends State<QuestionScreen> {
               height: 30,
             ),
             ...currentQuestion.getShuffledAnswers().map((item) {
-              return AnswerButton(answerText: item, onTap: answerQuestion);
+              return AnswerButton(answerText: item, onTap: (){
+                answerQuestion(item);
+              });
             }),
           ],
         ),
