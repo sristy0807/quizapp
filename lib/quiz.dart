@@ -27,10 +27,17 @@ class _QuizState extends State<Quiz> {
     selectedAnswers.add(answer);
     if(selectedAnswers.length == questions.length){
       setState(() {
-        selectedAnswers= [];
+      //  selectedAnswers= [];
         activeScreen = 'result-screen';
       });
     }
+  }
+
+  void restartQuiz(){
+    setState(() {
+      selectedAnswers = [];
+      activeScreen = 'question-screen';
+    });
   }
 
   @override
@@ -43,7 +50,7 @@ class _QuizState extends State<Quiz> {
     }
 
     if(activeScreen == 'result-screen'){
-      screenWidget = const ResultScreen();
+      screenWidget =  ResultScreen(chosenAnswers: selectedAnswers, onRestart: restartQuiz,);
     }
 
     return MaterialApp(
